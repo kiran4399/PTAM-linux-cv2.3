@@ -1,0 +1,33 @@
+--- PTAM/Build/LinuxMakefile    2014-09-23 16:44:15.979478461 +0900
++++ /home/kiran/vision/PTAM-work/PTAM/Makefile   2014-09-23 16:41:31.574663222 +0900
+@@ -6,8 +6,8 @@
+ CC = g++
+ # COMPILEFLAGS = -I MY_CUSTOM_INCLUDE_PATH -D_LINUX -D_REENTRANT -Wall  -O3 -march=nocona -msse3
+ # LINKFLAGS = -L MY_CUSTOM_LINK_PATH -lGVars3 -lcvd
+-COMPILEFLAGS = -D_LINUX -D_REENTRANT -Wall  -O3 -march=nocona -msse3 -I/usr/include/opencv-2.3.1
+-LINKFLAGS = -L/usr/local/lib -lGVars3 -lcvd -lopencv_legacy -lopencv_core -lopencv_video -lopencv_highgui
++COMPILEFLAGS = -D_LINUX -D_REENTRANT -Wall  -O3 -march=nocona -msse3 -I/usr/include
++LINKFLAGS = -L/usr/local/lib -lGVars3 -lcvd -lopencv_legacy -lopencv_core -lopencv_video -lopencv_highgui -lGLU -lGL -llapack -lblas -lgfortran 
+  
+ # Edit this line to change video source
+ VIDEOSOURCE = VideoSource_Linux_OpenCV.o
+--- PTAM/Tracker.cc 2014-09-23 16:44:15.971478422 +0900
++++ /home/kiran/vision/PTAM-work/PTAM/Tracker.cc 2014-09-23 16:06:21.312198996 +0900
+@@ -19,6 +19,10 @@
+ #include <fcntl.h>
+  
+  
++#ifndef WIN32
++  #include <unistd.h>
++#endif
++
+ using namespace CVD;
+ using namespace std;
+ using namespace GVars3;
+--- PTAM/Build/Linux/VideoSource_Linux_OpenCV.cc    2014-09-23 16:44:15.979478461 +0900
++++ /home/kiran/vision/PTAM-work/PTAM/VideoSource_Linux_OpenCV.cc    2014-09-23 15:02:10.909105878 +0900
+@@ -105,3 +105,4 @@
+ *cap >> frame;
+   conversionNB(frame, imBW);
+   conversionRGB(frame, imRGB);
++}
